@@ -14,6 +14,7 @@ int main() {
 		return 0;
 	}
 	system(strcat(str1, str2));
-	
+	1+1; 
+	//ÀîÔÚ¸ÓÉñÄ§ 
 	return 0;
 } 
