@@ -19,35 +19,6 @@ def send(client_socket, client_address, csv_filename, pic_filename):
         file_data = file.read()
     client_socket.sendall(file_data)
 
-    # BUFSIZE = 1024
-    # print('Waiting for the connection：', client_address)
-    # data = client_socket.recv(BUFSIZE).decode()
-    # filename = data.split()[1]
-    # filename = filename[1:]
-    #
-    # '''当网络质量差没有收到浏览器的访问数据时执行'''
-    # if filename == "":
-    #     client_socket.close()
-    #     print("请输入要访问的文件")
-    #
-    # base_dir = os.getcwd()
-    # file_dir = os.path.join(base_dir, filename)
-    #
-    # '''当访问的文件在本地服务器存在时执行'''
-    # if os.path.exists(file_dir):
-    #     f = open(file_dir, encoding='utf-8')
-    #     SUCCESS_PAGE = "HTTP/1.1 200 OK\r\n\r\n" + f.read()
-    #     print(SUCCESS_PAGE)
-    #     client_socket.sendall(SUCCESS_PAGE.encode())
-    #     client_socket.close()
-    # else:
-    #     FAIL_PAGE = "HTTP/1.1 404 NotFound\r\n\r\n" + open(os.path.join(base_dir, "fail.html"),
-    #                                                        encoding="utf-8").read()
-    #     print(FAIL_PAGE)
-    #     client_socket.sendall(FAIL_PAGE.encode())
-    #     client_socket.close()
-
-
 # 外部调用本函数
 def start_listen(ip, port, csv_filename, pic_filename):
     server_socket = socket.socket()
