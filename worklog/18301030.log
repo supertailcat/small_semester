@@ -5,3 +5,5 @@
 下午：服务器监听代码。待测试。
 
 7/1：配置MyEclipse、tomcat环境。配置完成。不知道自己在干什么。制作了小组分工的甘特图放到了worklog里。
+
+7/2：学习Tomcat的相关知识。在实际操作的过程中发现了版本的冲突：JDK、Tomcat、JavaEE不兼容。考虑摆脱Tomcat投入到Django的开发之中。日常没搞懂Tomcat和Flask怎么连在一起。搞不懂。
