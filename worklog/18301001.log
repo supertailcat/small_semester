@@ -86,6 +86,32 @@
 	2. 配置Flask环境：
 		因为anaconda中已经含有flask的包，因此很容易就导入其中。但因为在服务器上运行，为了代码编写的方便，花了许多时间在配置服务器中的jupyter notebook远程连接，以便于后续写代码的方便
 	3. 与组员沟通交流，初步了解json的运行机制以及输入输出，以便于了解flask的运行机制
+14:00-18:00
+主要内容：
+	1. 观看视频，学习了Flask，成果如下：
+		1.了解了Flask的基本作用以及原理
+		2. 学会创建flask项目，并正常运行"hello world"
+		3. 学习了路由请求方式：
+			了解了HTTP常用的8种请求方式，并且了解了请求方式模拟软件"postman"
+			@app.route('/', methods=['GET', 'POST']) # 添加新方法POST
+		4. 路由参数处理：
+			动态路由参数<>: @app.route('/<id>')
+			限定类型：		@app.route('/<int=id>')
+		5. 学习了Jinja2模版引擎的使用：
+			学会使用render_template("index.html")函数
+			学会变量代码块的使用：{{num}}
+			控制代码块的使用: 
+				{%for num in range(10)%} 
+				{# TO DO #}
+				{% endfor %}
+	2. 与小组成员讨论了项目整体的架构，逐渐理解架构与技术框架的关系
+	3. 问题：flask已经是个服务器，那么tomcat如何应用在flask上？
+	4. 目标：
+		1. 入门flask
+		2. 并且能够使用flask读取json数据
+		3. 并完成服务端与客户端的传输
+			
+			
 
 
 
