@@ -11,27 +11,28 @@ import threading
 
 
 # 向客户端发送csv文件和图片（字符串形式）
-def send(client_socket, client_address, csv_filename, pic_filename):
-    with open(csv_filename) as file:
+def send(client_socket, client_address, json_filename, pic_filename):
+    with open(json_filename) as file:
         file_data = file.read()
     client_socket.sendall(file_data)
     with open(pic_filename) as file:
         file_data = file.read()
     client_socket.sendall(file_data)
 
+
 # 外部调用本函数
-def start_listen(ip, port, csv_filename, pic_filename):
+def start_listen(ip, port, json_filename, pic_filename):
     server_socket = socket.socket()
     server_socket.bind((ip, port))
     server_socket.listen(5)
     print("waiting for connection......\n")
     while True:
         client_socket, client_address = server_socket.accept()
-        thread = threading.Thread(target=send, args=(client_socket, client_address, csv_filename, pic_filename))
+        thread = threading.Thread(target=send, args=(client_socket, client_address, json_filename, pic_filename))
         thread.start()
     # server_socket.close()
 
 
 if __name__ == "__main__":
     print(socket.gethostbyname(socket.gethostname()))
-    start_listen(socket.gethostbyname(socket.gethostname()), 8080, "*.csv", "*.png")
+    start_listen(socket.gethostbyname(socket.gethostname()), 8080, "*.json", "*.png")
