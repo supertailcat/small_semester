@@ -7,3 +7,6 @@
 7/1：配置MyEclipse、tomcat环境。配置完成。不知道自己在干什么。制作了小组分工的甘特图放到了worklog里。
 
 7/2：学习Tomcat的相关知识。在实际操作的过程中发现了版本的冲突：JDK、Tomcat、JavaEE不兼容。考虑摆脱Tomcat投入到Django的开发之中。日常没搞懂Tomcat和Flask怎么连在一起。搞不懂。
+已经决定放弃Tomcat，全部采用python。用Django开发用户登录界面，随后调用Flask的业务界面。正在学习Django和HTML。现在既然都是python了，连接起来两个部分就比较容易了。
+
+7/3：学习了Django。成功地写出了登录注册界面。并联通了数据库。尝试放到服务器上运行。
