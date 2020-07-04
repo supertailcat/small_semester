@@ -10,3 +10,5 @@
 已经决定放弃Tomcat，全部采用python。用Django开发用户登录界面，随后调用Flask的业务界面。正在学习Django和HTML。现在既然都是python了，连接起来两个部分就比较容易了。
 
 7/3：学习了Django。成功地写出了登录注册界面。并联通了数据库。尝试放到服务器上运行。成功。可以通过ip+端口访问登陆/注册界面了。登陆注册功能正常实现。明天尝试与Flask组进行socket连接。
+
+7/4：学习了websocket，写了Django端websocket的代码。并且与websocket服务器端的对接试验成功。代码是HTMLJS格式的，能发送信息但是界面显示有问题。另外，websocket超时会断连，不过我们只需要从Flask服务器接受一次数据信息，所以无所谓。
