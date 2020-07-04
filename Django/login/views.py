@@ -34,6 +34,7 @@ def login(request):
             request.session['username'] = user.username
             # return redirect('login:index')
             return render(request, 'login/weatherInfo.html')
+            # return redirect('login:weatherInfo')
         else:
             return render(request, 'login/login.html', {'error_message': '用户名或密码错误'})
     except User.DoesNotExist:
