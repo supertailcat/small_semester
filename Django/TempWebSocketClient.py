@@ -24,7 +24,7 @@ async def send_msg(websocket):
 
 # 客户端主逻辑
 async def main_logic():
-    async with websockets.connect('ws://124.70.204.202:8080') as websocket:
+    async with websockets.connect('ws://124.70.204.202:18888') as websocket:
         await auth_system(websocket)
 
         await send_msg(websocket)
