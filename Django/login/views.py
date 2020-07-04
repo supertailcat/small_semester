@@ -32,8 +32,7 @@ def login(request):
         user = User.objects.get(username=username)
         if user.password == password:
             request.session['username'] = user.username
-            # return redirect('login:index')
-            return render(request, 'login/test.html')
+            return redirect('login:weatherInfo')
         else:
             return render(request, 'login/login.html', {'error_message': '用户名或密码错误'})
     except User.DoesNotExist:
@@ -44,3 +43,7 @@ def logout(request):
     if 'username' in request.session:
         del request.session['username']
     return HttpResponseRedirect(reverse('login:index') + '?message=注销成功')
+
+
+def weatherInfo(request):
+    return render(request, 'login/weatherInfo.html')
