@@ -38,21 +38,12 @@
                        }
                    }
                }
-<<<<<<< HEAD
-=======
-           }
-         function WebSocketTest()
-         {
-            if ("WebSocket" in window)
-            {
-               // 打开一个 web socket
-               var ws = new WebSocket("ws://47.94.6.112:5678");
->>>>>>> bb03da95632d14af7f99ffa441c970baa62c1fa7
+
 
                function WebSocketTest() {
                    if ("WebSocket" in window) {
                        // 打开一个 web socket
-                       var ws = new WebSocket("ws://124.70.204.202:5678");
+                       var ws = new WebSocket("ws://47.94.6.112:5678");
 
 
                        // 接收到服务器消息后的回调函数
@@ -67,27 +58,12 @@
                        // 连接关闭后的回调函数
                        ws.onclose = function () {
                            // 关闭 websocket
-                           alert("连接已关闭...");
+                           alert("传输结束...");
                        };
                    } else {
                        // 浏览器不支持 WebSocket
                        alert("您的浏览器不支持 WebSocket!");
                    }
-
-<<<<<<< HEAD
-=======
-               // 连接关闭后的回调函数
-               ws.onclose = function()
-               {
-                  // 关闭 websocket
-                  alert("传输结束");
-               };
-            }
-            else
-            {
-               // 浏览器不支持 WebSocket
-               alert("您的浏览器不支持 WebSocket!");
->>>>>>> bb03da95632d14af7f99ffa441c970baa62c1fa7
             }
 
       </script>
