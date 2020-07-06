@@ -11,6 +11,7 @@ def ws():
     while 1:
         msg = user_socket.receive()
         print(msg)
+        print(type(msg))
         user_socket.send(str("server received: ") + msg)
     return "123"
 
