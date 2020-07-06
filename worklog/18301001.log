@@ -171,6 +171,9 @@
 				}
 			3. 连接建立后的回调函数：ws.onopen = function(){}
 			4. 关闭连接的回调函数：ws.onclose = function()
+
+2020/7/7
+1:09 实现基于flask的websocket连接
 			
 		
 			
