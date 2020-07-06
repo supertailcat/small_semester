@@ -74,8 +74,8 @@ def login(request):
                 request.session['user_id'] = user.id
                 request.session['user_name'] = user.name
                 print(username, password)
-                # return redirect('/index/')
-                return redirect('weatherInfo')
+                return redirect('/index/')
+                # return redirect('weatherInfo')
             else:
                 message = '请检查密码：'
                 return render(request, 'login/login.html', {'message': message})
@@ -91,7 +91,7 @@ def register(request):
 
     if request.method == 'POST':
         register_form = forms.RegisterForm(request.POST)
-        message = "请检查填写的内容！"
+        message = "注册成功！即将转到登陆界面..."
         if register_form.is_valid():
             username = register_form.cleaned_data.get('username')
             password1 = register_form.cleaned_data.get('password1')
@@ -161,5 +161,5 @@ def user_confirm(request):
         return render(request, 'login/confirm.html', locals())
 
 
-def weather_info(request):
-    return render(request, 'login/weatherInfo.html')
+# def weather_info(request):
+#     return render(request, 'login/weatherInfo.html')

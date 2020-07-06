@@ -25,5 +25,5 @@ urlpatterns = [
     path('logout/', views.logout),
     path('captcha/', include('captcha.urls')),
     path('confirm/', views.user_confirm),
-    path('weatherInfo/', views.weather_info, name='weatherInfo'),
+    # path('weatherInfo/', views.weather_info, name='weatherInfo'),
 ]
