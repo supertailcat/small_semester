@@ -1,9 +1,47 @@
 <!DOCTYPE HTML>
 <html>
+
    <head>
+
    <meta charset="utf-8">
    <title>websocket通信客户端</title>
        <script type="text/javascript">
+           var received_msg
+           var received_msg1='lzh'
+           {#将json字符串转为json对象#}
+           var datanav=[{
+               "DATE":"2020/1/11",
+               "MAXT":"89",
+               "MINT":"73",
+               "AVGT":"80",
+           },{
+               "DATE":"2020/1/12",
+               "MAXT":"86",
+               "MINT":"69",
+               "AVGT":"80",
+           }]
+           var datanav1=JSON.parse('{"DATE": "2020/1/10", "MAXT": "89", "MINT": "69", "AVGT": "80"}\n' +
+               '{"DATE": "2020/1/11", "MAXT": "89", "MINT": "73", "AVGT": "80"}\n' +
+               '{"DATE": "2020/1/12", "MAXT": "86", "MINT": "69", "AVGT": "80"}\n' +
+               '{"DATE": "2020/1/13", "MAXT": "79", "MINT": "66", "AVGT": "80"}\n' +
+               '{"DATE": "2020/1/14", "MAXT": "96", "MINT": "74", "AVGT": "80"}\n' +
+               '{"DATE": "2020/1/15", "MAXT": "88", "MINT": "74", "AVGT": "80"}\n' +
+               '{"DATE": "2020/1/16", "MAXT": "92", "MINT": "72", "AVGT": "80"}\n')
+           {#obj.docs;#}
+           window.onload=function(){
+               var table=document.getElementsByTagName('table')[0];
+               for(var i=0;i<datanav.length;i++){
+                   var tr=table.insertRow(table.rows.length);
+                   var obj=datanav[i];
+                   for(var p in obj){
+                       if(p=='tenancy'){
+                           break;
+                       }
+                       var td=tr.insertCell(tr.cells.length);
+                       td.innerText=obj[p];
+                   }
+               }
+           }
          function WebSocketTest()
          {
             if ("WebSocket" in window)
@@ -11,21 +49,15 @@
                // 打开一个 web socket
                var ws = new WebSocket("ws://124.70.204.202:5678");
 
-               // 连接建立后的回调函数
-               ws.onopen = function()
-               {
-               // Web Socket 已连接上，使用 send() 方法发送数据
-                  ws.send("admin:123456");
-                  alert("正在发送：admin:123456");
-               };
+
 
                // 接收到服务器消息后的回调函数
                ws.onmessage = function (evt)
                {
-                  var received_msg = evt.data;
-                  if (received_msg.indexOf("sorry") == -1) {
+                   received_msg = evt.data;
+
                     alert("收到消息："+received_msg);
-                  }
+                    document.getElementById('textfield').value=received_msg
 
                };
 
@@ -45,6 +77,27 @@
 
       </script>
        <h1 align="center">Weather Prediction</h1> <!标题 居中（这是html的注释方式）>
+{#       <div onclick="alert(received_msg1)">点我输出变量</div>#}
+
+<body>
+   <table>
+       <tr>
+           <th>日期</th>
+           <th>最高气温</th>
+           <th>最低气温</th>
+           <th>平均气温</th>
+       </tr>
+   </table>>
+</body>
+   <style type="test/css">
+       table{
+           border:1px solid black;
+           border-collapse: collapse;
+       }
+       td,th{
+           border:1px solid black;
+       }
+   </style>
    </head>
 
    <body onload="WebSocketTest()">
