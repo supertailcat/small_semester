@@ -154,6 +154,24 @@
 		目前需要解决的问题：如何将json数据导入echart
 		如何基本显示绘图
 	2. 准备小组讨论：flask到底能用在哪个地方？django如何通过websocket调用？
+14:00-18:00
+主要内容：
+	1. 新想法：flask搭建监控中转站，将中转信息发送至web，达到监控数据的目的
+	2. 16:27 flask通过websocket与web初步连接——ready state：1
+	3. 常用语句：
+		1. 服务端：
+			创建websocket：user_socket = request.environ.get('wsgi.websocket')  # type:WebSocket
+			接收客户端消息：user_socket.receive()
+			发送信息：user_socket.send()
+		2. 客户端：
+			1. 创建websocket：ws = new WebSocket("ws://127.0.0.1:9999/ws")
+			2. 接受到服务端的消息之后的回调函数：
+				ws.onmessage = function(data) {
+					console.log(data.data)
+				}
+			3. 连接建立后的回调函数：ws.onopen = function(){}
+			4. 关闭连接的回调函数：ws.onclose = function()
+			
 		
 			
 
