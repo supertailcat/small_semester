@@ -63,7 +63,7 @@ def login(request):
                 user = models.User.objects.get(name=username)
             except:
                 message = '用户不存在！'
-                return render(request, 'login/login.html', {'message': message})
+                return render(request, 'login/login.html', locals())
 
             # if not user.has_confirmed:
             #     message = '该用户还未经过邮件确认！'
@@ -78,9 +78,9 @@ def login(request):
                 # return redirect('weatherInfo')
             else:
                 message = '请检查密码：'
-                return render(request, 'login/login.html', {'message': message})
+                return render(request, 'login/login.html', locals())
         else:
-            return render(request, 'login/login.html', {'message': message})
+            return render(request, 'login/login.html', locals())
     login_form = forms.UserForm()
     return render(request, 'login/login.html', locals())
 
