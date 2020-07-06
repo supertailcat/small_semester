@@ -75,7 +75,7 @@ def login(request):
                 request.session['user_name'] = user.name
                 print(username, password)
                 # return redirect('/index/')
-                return redirect('login:weatherInfo')
+                return redirect('weatherInfo')
             else:
                 message = '请检查密码：'
                 return render(request, 'login/login.html', {'message': message})
