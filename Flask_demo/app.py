@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, json, jsonify
 from geventwebsocket.handler import WebSocketHandler
 from geventwebsocket.websocket import WebSocket
+from geventwebsocket.exceptions import WebSocketError
 from gevent.pywsgi import WSGIServer
 
 app = Flask(__name__)
@@ -11,6 +12,7 @@ admin_socket = []
 
 def check_permit(user_socket):
     msg = user_socket.receive()
+    print("@@-> " + msg)
     try:
         user, passwd = msg.split(":")
     except ValueError:
@@ -42,8 +44,11 @@ def check_permit(user_socket):
         return False
 
 def publish(str, msg):
-    for client in console_list:
-        client.send(str + ": \n" + msg)
+    try:
+        for client in console_list:
+            client.send(str + ": \n" + msg)
+    except WebSocketError as e:
+        pass
 
 
 
@@ -56,16 +61,32 @@ def ws():
         if check_permit(user_socket): # 用户名密码成功匹配
             # 进入循环
             while 1:
-                msg = user_socket.receive()
-                publish("Admin", msg)
+                try:
+                    msg = user_socket.receive()
+                    publish("Admin", msg)
+                except TypeError as e:
+                    print("disconnect.")
+                    user_socket.close()
+                    break
 
-                if msg == "SEND_JSON":
-                    jf = open("./json_file.json")
+                try:
+                    jf = open("../Forecast/json/" + msg + ".json")
                     jsonStr = json.dumps(json.load(jf))  # convert json data to str
                     print(jsonStr)
                     user_socket.send(jsonStr)
                     if user_socket == admin_socket[0]:  # 发送给控制台监控
                         publish("Server", jsonStr)
+
+                except FileNotFoundError as e:
+                    publish("Server", "cannot find the file.")
+
+                # if msg == "SEND_JSON":
+                #     jf = open("Forecast/json/" + msg + ".json")
+                #     jsonStr = json.dumps(json.load(jf))  # convert json data to str
+                #     print(jsonStr)
+                #     user_socket.send(jsonStr)
+                #     if user_socket == admin_socket[0]:  # 发送给控制台监控
+                #         publish("Server", jsonStr)
     # else:
     #     pass
 

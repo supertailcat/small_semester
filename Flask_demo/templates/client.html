@@ -2,17 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>test</title>
+    <title>Client</title>
 </head>
 
 <body>
-<h1>Console</h1>
+<h1>Client</h1>
 
 <script type="application/javascript">
     ws = new WebSocket("ws://47.94.6.112:5678/ws")
+    //开局连接
+    ws.onopen = function(){
+        ws.send("admin:123456");
+    }
     ws.onmessage = function (rec) {
         document.getElementById("content").innerHTML+=rec.data+"<br/>";
     }
+    ws.onclose = function () {
+        window.location.reload(); // 重新加载
+
+    }
+
 </script>
 
 <div id="content"></div>
