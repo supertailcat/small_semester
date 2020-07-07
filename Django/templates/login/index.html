@@ -2,23 +2,41 @@
 <html>
 
     <head>
-
+    <link href="favicon.ico" rel="shortcut icon">
     <meta charset="utf-8">
     <title>websocket通信客户端</title>
+    <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.4.0/jquery.min.js"></script>
     <body>
     <h1>{{ request.session.user_name }}，欢迎您！</h1>
     <p>
         <a href="/logout/">注销</a>
     </p>
+    <h1 align="center">Weather Prediction</h1> <!标题 居中（这是html的注释方式）>
+{#       <div onclick="alert(received_msg1)">点我输出变量</div>#}
+    <body>
+    <div id="chart" style="width:700px;height:400px;"></div>
+    </body>
     </body>
        <style type="test/css">
+       /*table{*/
+       /*    border:1px solid black;*/
+       /*    border-collapse: collapse;*/
+       /*}*/
+       /*td,th{*/
+       /*    border:1px solid black;*/
+       /*}*/
        table{
-           border:1px solid black;
-           border-collapse: collapse;
-       }
-       td,th{
-           border:1px solid black;
-       }
+            margin: 0;
+            padding: 0;
+            outline: 0;
+            vertical-align: baseline;
+            background: transparent;
+            border-collapse: collapse;
+            border-spacing: 0;
+            border: 0;
+            color: #ff0012;
+           }
    </style>
        <script type="text/javascript">
            var datanav=[{"DATE": "2020/1/10", "MAXT": "89", "MINT": "69", "AVGT": "80"}, {"DATE": "2020/1/11", "MAXT": "89", "MINT": "73", "AVGT": "80"},
@@ -27,12 +45,14 @@
 {"DATE": "2020/1/14", "MAXT": "96", "MINT": "74", "AVGT": "80"},
 {"DATE": "2020/1/15", "MAXT": "88", "MINT": "74", "AVGT": "80"},
 {"DATE": "2020/1/16", "MAXT": "92", "MINT": "72", "AVGT": "80"}];
-           var received_msg1='lzh'
-           {#将json字符串转为json对象#}
 
+           var received_msg1='lzh'
+           var date=datanav.map(x => {return x.DATE});
+           var mint=datanav.map(x => {return x.MINT});
+           var maxt=datanav.map(x => {return x.MAXT});
+           var avgt=datanav.map(x => {return x.AVGT});
            <!--parse方法将字符串转json对象要求格式必须单引号套双引号-->
 
-           {#obj.docs;#}
            window.onload=function() {
                var table = document.getElementsByTagName('table')[0];
                for (var i = 0; i < datanav.length; i++) {
@@ -43,38 +63,112 @@
                            td.innerText = obj[p];
                        }
                    }
+
                }
 
 
-               function WebSocketTest() {
-                   if ("WebSocket" in window) {
-                       // 打开一个 web socket
-                       var ws = new WebSocket("ws://47.94.6.112:5678");
-
-
-                       // 接收到服务器消息后的回调函数
-                       ws.onmessage = function (evt) {
-                           received_msg = evt.data;
-
-                           alert("收到消息：" + received_msg);
-                           document.getElementById('textfield').value = received_msg
-
-                       };
-
-                       // 连接关闭后的回调函数
-                       ws.onclose = function () {
-                           // 关闭 websocket
-                           alert("传输结束...");
-                       };
-                   } else {
-                       // 浏览器不支持 WebSocket
-                       alert("您的浏览器不支持 WebSocket!");
-                   }
-            }
+            //    function WebSocketTest() {
+            //        if ("WebSocket" in window) {
+            //            // 打开一个 web socket
+            //            var ws = new WebSocket("ws://47.94.6.112:5678");
+            //
+            //
+            //            // 接收到服务器消息后的回调函数
+            //            ws.onmessage = function (evt) {
+            //                received_msg = evt.data;
+            //
+            //                alert("收到消息：" + received_msg);
+            //                document.getElementById('textfield').value = received_msg
+            //
+            //            };
+            //
+            //            // 连接关闭后的回调函数
+            //            ws.onclose = function () {
+            //                // 关闭 websocket
+            //                alert("传输结束...");
+            //            };
+            //        } else {
+            //            // 浏览器不支持 WebSocket
+            //            alert("您的浏览器不支持 WebSocket!");
+            //        }
+            // }
+// 初始化图表标签
+//     var myChart = echarts.init(document.getElementById('chart'));
+//     var options={
+//         //定义一个标题
+//         title:{
+//             text:'天气预测'
+//         },
+//         legend:{
+//             data:['最高气温']
+//         },
+//         //X轴设置
+//         xAxis:{
+//             data:['ML','DL','TL','RL','DL-GAN']
+//         },
+//         yAxis:{
+//         },
+//         //name=legend.data的时候才能显示图例
+//         series:[{
+//             name:'最高气温',
+//             type:'line',
+//
+//             data:['12','32','45','78','60']
+//         }]
+//
+//     };
+//     myChart.setOption(options);
+       $(document).ready(function(){
+        //echarts进行初始化
+		var myChart = echarts.init(document.getElementById("chart"));
+		myChart.setOption({
+            //图标题
+			title:{text: '天气预测'},
+            //图提示框
+			tooltip:{
+			    trigger:"axis",
+                axisPointer:{
+			        type:'shadow'
+                },
+            },
+            //图例
+			legend:{
+				data:['最低气温','最高气温','平均气温']
+			},
+            //x轴属性
+			xAxis:{
+				data:date,
+                axisTick: {
+          alignWithLabel: true
+        }
+			},
+            //y轴属性
+			yAxis:{},
+			//图属性
+			series:[
+				{
+					name:'最低气温',
+					type:'line',//图类型：柱状图
+					color:['#1600ff'],//设置图像颜色
+					data:mint,//图表的数值
+                    // itemStyle : { normal: {label : {show: true}}}
+				},{
+			        name:'最高气温',
+					type:'line',//图类型：柱状图
+					color:['#ff000a'],//设置图像颜色
+					data:maxt//图表的数值
+                },{
+			        name:'平均气温',
+					type:'line',//图类型：柱状图
+					color:['#ff00dc'],//设置图像颜色
+					data:avgt//图表的数值
+                }
+			]
+		});
+		});
 
       </script>
-       <h1 align="center">Weather Prediction</h1> <!标题 居中（这是html的注释方式）>
-{#       <div onclick="alert(received_msg1)">点我输出变量</div>#}
+
 
 <body>
    <table border="4">
@@ -88,9 +182,7 @@
 </body>
 
    </head>
-
-   <body onload="WebSocketTest()">
-{#   <body onload="insert()">#}
+<!--   <body onload="WebSocketTest()">-->
 
    </body>
 </html>
