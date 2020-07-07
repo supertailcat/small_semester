@@ -2,96 +2,90 @@
 <html>
 
     <head>
-    <link href="favicon.ico" rel="shortcut icon">
-    <meta charset="utf-8">
-    <title>websocket通信客户端</title>
-    <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
-    <script src="https://cdn.bootcss.com/jquery/3.4.0/jquery.min.js"></script>
+        <link href="favicon.ico" rel="shortcut icon">
+        <meta charset="utf-8">
+<!--    <title>websocket通信客户端</title>-->
+        <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+        <script src="https://cdn.bootcss.com/jquery/3.4.0/jquery.min.js"></script>
+    </head>
     <body>
-    <h1>{{ request.session.user_name }}，欢迎您！</h1>
-    <p>
-        <a href="/logout/">注销</a>
-    </p>
-    <h1 align="center">Weather Prediction</h1> <!标题 居中（这是html的注释方式）>
-{#       <div onclick="alert(received_msg1)">点我输出变量</div>#}
-    <body>
-    <div id="chart" style="width:700px;height:400px;"></div>
+        <h2>{{ request.session.user_name }}，欢迎您！</h2>
+        <p>
+                <a href="/logout/">注销</a>
+        </p>
+        <h1 align="center">Weather Prediction</h1>
+        <body>
+            <div id="chart" style="width:700px;height:400px;"></div>
+        </body>
     </body>
-    </body>
-       <style type="test/css">
-       /*table{*/
-       /*    border:1px solid black;*/
-       /*    border-collapse: collapse;*/
-       /*}*/
-       /*td,th{*/
-       /*    border:1px solid black;*/
-       /*}*/
-       table{
-            margin: 0;
-            padding: 0;
-            outline: 0;
-            vertical-align: baseline;
-            background: transparent;
-            border-collapse: collapse;
-            border-spacing: 0;
-            border: 0;
-            color: #ff0012;
-           }
-   </style>
-       <script type="text/javascript">
-           var datanav=[{"DATE": "2020/1/10", "MAXT": "89", "MINT": "69", "AVGT": "80"}, {"DATE": "2020/1/11", "MAXT": "89", "MINT": "73", "AVGT": "80"},
-{"DATE": "2020/1/12", "MAXT": "86", "MINT": "69", "AVGT": "80"},
-{"DATE": "2020/1/13", "MAXT": "79", "MINT": "66", "AVGT": "80"},
-{"DATE": "2020/1/14", "MAXT": "96", "MINT": "74", "AVGT": "80"},
-{"DATE": "2020/1/15", "MAXT": "88", "MINT": "74", "AVGT": "80"},
-{"DATE": "2020/1/16", "MAXT": "92", "MINT": "72", "AVGT": "80"}];
+    <style type="test/css">
+   /*table{*/
+   /*    border:1px solid black;*/
+   /*    border-collapse: collapse;*/
+   /*}*/
+   /*td,th{*/
+   /*    border:1px solid black;*/
+   /*}*/
+    table{
+        margin: 0;
+        padding: 0;
+        outline: 0;
+        vertical-align: baseline;
+        background: transparent;
+        border-collapse: collapse;
+        border-spacing: 0;
+        border: 0;
+        color: #ff0012;
+       }
+    </style>
+    <script type="text/javascript">
+        var datanav=[{"DATE": "2020/1/10", "MAXT": "89", "MINT": "69", "AVGT": "80"},{"DATE": "2020/1/11", "MAXT": "89", "MINT": "73", "AVGT": "80"}, {"DATE": "2020/1/12", "MAXT": "86", "MINT": "69", "AVGT": "80"}, {"DATE": "2020/1/13", "MAXT": "79", "MINT": "66", "AVGT": "80"}, {"DATE": "2020/1/14", "MAXT": "96", "MINT": "74", "AVGT": "80"}, {"DATE": "2020/1/15", "MAXT": "88", "MINT": "74", "AVGT": "80"}, {"DATE": "2020/1/16", "MAXT": "92", "MINT": "72", "AVGT": "80"}];
 
-           var received_msg1='lzh'
-           var date=datanav.map(x => {return x.DATE});
-           var mint=datanav.map(x => {return x.MINT});
-           var maxt=datanav.map(x => {return x.MAXT});
-           var avgt=datanav.map(x => {return x.AVGT});
-           <!--parse方法将字符串转json对象要求格式必须单引号套双引号-->
+        var received_msg1='lzh'
+        var date=datanav.map(x => {return x.DATE});
+        var mint=datanav.map(x => {return x.MINT});
+        var maxt=datanav.map(x => {return x.MAXT});
+        var avgt=datanav.map(x => {return x.AVGT});
+       <!--parse方法将字符串转json对象要求格式必须单引号套双引号-->
 
-           window.onload=function() {
-               var table = document.getElementsByTagName('table')[0];
-               for (var i = 0; i < datanav.length; i++) {
-                   var tr = table.insertRow(table.rows.length);
-                   var obj = datanav[i];
-                   for (var p in obj) {
-                           var td = tr.insertCell(tr.cells.length);
-                           td.innerText = obj[p];
-                       }
-                   }
-
-               }
+        window.onload=function() {
+            var table = document.getElementsByTagName('table')[0];
+            for (var i = 0; i < datanav.length; i++) {
+                var tr = table.insertRow(table.rows.length);
+                var obj = datanav[i];
+                for (var p in obj) {
+                    var td = tr.insertCell(tr.cells.length);
+                    td.innerText = obj[p];
+                }
+            }
+        }
 
 
-            //    function WebSocketTest() {
-            //        if ("WebSocket" in window) {
-            //            // 打开一个 web socket
-            //            var ws = new WebSocket("ws://47.94.6.112:5678");
-            //
-            //
-            //            // 接收到服务器消息后的回调函数
-            //            ws.onmessage = function (evt) {
-            //                received_msg = evt.data;
-            //
-            //                alert("收到消息：" + received_msg);
-            //                document.getElementById('textfield').value = received_msg
-            //
-            //            };
-            //
-            //            // 连接关闭后的回调函数
-            //            ws.onclose = function () {
-            //                // 关闭 websocket
-            //                alert("传输结束...");
-            //            };
-            //        } else {
-            //            // 浏览器不支持 WebSocket
-            //            alert("您的浏览器不支持 WebSocket!");
-            //        }
-            // }
+        //    function WebSocketTest() {
+        //        if ("WebSocket" in window) {
+        //            // 打开一个 web socket
+        //            var ws = new WebSocket("ws://47.94.6.112:5678");
+        //
+        //
+        //            // 接收到服务器消息后的回调函数
+        //            ws.onmessage = function (evt) {
+        //                received_msg = evt.data;
+        //
+        //                alert("收到消息：" + received_msg);
+        //                document.getElementById('textfield').value = received_msg
+        //
+        //            };
+        //
+        //            // 连接关闭后的回调函数
+        //            ws.onclose = function () {
+        //                // 关闭 websocket
+        //                alert("传输结束...");
+        //            };
+        //        } else {
+        //            // 浏览器不支持 WebSocket
+        //            alert("您的浏览器不支持 WebSocket!");
+        //        }
+        // }
 // 初始化图表标签
 //     var myChart = echarts.init(document.getElementById('chart'));
 //     var options={
@@ -118,71 +112,111 @@
 //
 //     };
 //     myChart.setOption(options);
-       $(document).ready(function(){
+    $(document).ready(function(){
         //echarts进行初始化
-		var myChart = echarts.init(document.getElementById("chart"));
-		myChart.setOption({
+        var myChart = echarts.init(document.getElementById("chart"));
+        myChart.setOption({
             //图标题
-			title:{text: '天气预测'},
+            title:{text: '天气预测'},
             //图提示框
-			tooltip:{
-			    trigger:"axis",
+            tooltip:{
+                trigger:"axis",
                 axisPointer:{
-			        type:'shadow'
+                    type:'shadow'
                 },
             },
             //图例
-			legend:{
-				data:['最低气温','最高气温','平均气温']
-			},
+            legend:{
+                data:['最低气温','最高气温','平均气温']
+            },
             //x轴属性
-			xAxis:{
-				data:date,
-                axisTick: {
-          alignWithLabel: true
-        }
-			},
+            xAxis:{
+                data:date,
+                axisTick: {alignWithLabel: true}
+            },
             //y轴属性
-			yAxis:{},
-			//图属性
-			series:[
-				{
-					name:'最低气温',
-					type:'line',//图类型：柱状图
-					color:['#1600ff'],//设置图像颜色
-					data:mint,//图表的数值
+            yAxis:{},
+            //图属性
+            series:[
+                {
+                    name:'最低气温',
+                    type:'line',//图类型：柱状图
+                    color:['#1600ff'],//设置图像颜色
+                    data:mint,//图表的数值
                     // itemStyle : { normal: {label : {show: true}}}
-				},{
-			        name:'最高气温',
-					type:'line',//图类型：柱状图
-					color:['#ff000a'],//设置图像颜色
-					data:maxt//图表的数值
                 },{
-			        name:'平均气温',
-					type:'line',//图类型：柱状图
-					color:['#ff00dc'],//设置图像颜色
-					data:avgt//图表的数值
+                    name:'最高气温',
+                    type:'line',//图类型：柱状图
+                    color:['#ff000a'],//设置图像颜色
+                    data:maxt//图表的数值
+                },{
+                    name:'平均气温',
+                    type:'line',//图类型：柱状图
+                    color:['#ff00dc'],//设置图像颜色
+                    data:avgt//图表的数值
                 }
-			]
-		});
-		});
+            ]
+        });
+    });
+    </script>
 
-      </script>
+    <body>
+        <table border="4">
+            <tr>
+                <th>日期</th>
+                <th>最高气温</th>
+                <th>最低气温</th>
+                <th>平均气温</th>
+           </tr>
+        </table>
+    </body>
+    <body>
+        <label>
+            <select id="s1">
+                <option value="BeiJing">BeiJing</option>
+                <option value="ChangChun">ChangChun</option>
+                <option value="ChangSha">ChangSha</option>
+                <option value="ChengDu">ChengDu</option>
+                <option value="ChongQing">ChongQing</option>
+                <option value="FuZhou">FuZhou</option>
+                <option value="GuangZhou">GuangZhou</option>
+                <option value="GuiYang">GuiYang</option>
+                <option value="HaErBin">HaErBin</option>
+                <option value="HaiKou">HaiKou</option>
+                <option value="HangZhou">HangZhou</option>
+                <option value="HeFei">HeFei</option>
+                <option value="HongKong">HongKong</option>
+                <option value="HuHeHaoTe">HuHeHaoTe</option>
+                <option value="JiNan">JiNan</option>
+                <option value="KunMing">KunMing</option>
+                <option value="LanZhou">LanZhou</option>
+                <option value="LaSa">LaSa</option>
+                <option value="Macau">Macau</option>
+                <option value="NanChang">NanChang</option>
+                <option value="NanJing">NanJing</option>
+                <option value="NanNing">NanNing</option>
+                <option value="ShangHai">ShangHai</option>
+                <option value="ShenYang">ShenYang</option>
+                <option value="ShiJiaZhuang">ShiJiaZhuang</option>
+                <option value="TaiYuan">TaiYuan</option>
+                <option value="TianJin">TianJin</option>
+                <option value="WuHan">WuHan</option>
+                <option value="WuLuMuQi">WuLuMuQi</option>
+                <option value="XiAn">XiAn</option>
+                <option value="XiNing">XiNing</option>
+                <option value="YinChuan">YinChuan</option>
+                <option value="ZhengZhou">ZhengZhou</option>
+            </select>
+        </label>
+        <button onclick="choose()" >确定</button>
+        <script type="text/javascript">
+        function choose() {
+           alert(document.getElementById("s1").value);
+        }
+        </script>
+    </body>
 
 
-<body>
-   <table border="4">
-       <tr>
-           <th>日期</th>
-           <th>最高气温</th>
-           <th>最低气温</th>
-           <th>平均气温</th>
-       </tr>
-   </table>
-</body>
-
-   </head>
 <!--   <body onload="WebSocketTest()">-->
-
-   </body>
+<!--   </body>-->
 </html>
