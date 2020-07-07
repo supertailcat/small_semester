@@ -14,17 +14,14 @@ def csv_to_json(filename):
     json_file = open('json_file.json', 'w')
     fieldnames = ("DATE", "MAXT", "MINT", "AVGT")
     reader = csv.DictReader(csv_file, fieldnames)
-    json_file.write('{\n\t')
-    json_file.write('"data": [\n')
+    json_file.write('[')
     count = 0;
     for row in reader:
-        json_file.write('\t\t')
         json.dump(row, json_file)
         if count < 6 :
-            json_file.write(',\n')
+            json_file.write(',')
         count = count + 1
-    json_file.write('\n\t]\n')
-    json_file.write('}')
+    json_file.write(']')
 
 
 if __name__ == "__main__":
