@@ -21,14 +21,19 @@ def check_permit(user_socket):
 def ws():
     user_socket = request.environ.get('wsgi.websocket')  # type:WebSocket
     print("client connected!")
-    if check_permit(user_socket):
-        while 1:
-            msg = user_socket.receive()
+    jf = open("./json_file.json")
+    jsonStr = json.dumps(json.load(jf)) # load json data
+    print(jsonStr)
+    user_socket.send(jsonStr)
+
+   # if check_permit(user_socket):
+   #     while 1:
+   #         msg = user_socket.receive()
            # if msg == "SEND_JSON":
                # jf = open("./json_file.json")
                # jsonStr = jsonify(json.load(jf)) # load json data
                # user_socket.send(json.load(jf))
-            user_socket.send("server received: " + msg)
+           # user_socket.send("server received: " + msg)
     return "123"
     # else:
     #     pass
