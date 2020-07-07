@@ -4,13 +4,22 @@
     <meta charset="UTF-8">
     <title>test</title>
 </head>
+
 <body>
+<h1>Console</h1>
+
 <script type="application/javascript">
     ws = new WebSocket("ws://47.94.6.112:5678/ws")
-    ws.onmessage = function(data) {
-        console.log(data.data)
+    ws.onmessage = function (rec) {
+        document.getElementById("content").innerHTML+=rec.data+"<br/>";
     }
 </script>
-</form>
+
+<div id="content"></div>
+
+
 </body>
 </html>
+
+
+
