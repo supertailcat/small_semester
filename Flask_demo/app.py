@@ -82,7 +82,8 @@ def ws():
             # 打开文件
             try:
                 jf = open("../Forecast/json/" + msg + ".json")
-                jsonStr = json.dumps(json.load(jf))  # convert json data to str
+                jsonStr = json.dumps(json.load(jf), sort_keys=False)  # convert json data to str
+
                 print(jsonStr)
             except FileNotFoundError as e:
                 publish("Server", "cannot find the city.")
