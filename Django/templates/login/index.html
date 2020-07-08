@@ -68,26 +68,36 @@
             <div id="chart" style="width:700px;height:400px;"></div>
         </body>
     </body>
-
+    <body>
+        <table border="4">
+            <tr>
+                <th>日期</th>
+                <th>最高气温</th>
+                <th>最低气温</th>
+                <th>平均气温</th>
+           </tr>
+        </table>
+    </body>
     <script type="text/javascript">
-        var datanav=[{"DATE": "2020/1/10", "MAXT": "89", "MINT": "69", "AVGT": "80"},{"DATE": "2020/1/11", "MAXT": "89", "MINT": "73", "AVGT": "80"}, {"DATE": "2020/1/12", "MAXT": "86", "MINT": "69", "AVGT": "80"}, {"DATE": "2020/1/13", "MAXT": "79", "MINT": "66", "AVGT": "80"}, {"DATE": "2020/1/14", "MAXT": "96", "MINT": "74", "AVGT": "80"}, {"DATE": "2020/1/15", "MAXT": "88", "MINT": "74", "AVGT": "80"}, {"DATE": "2020/1/16", "MAXT": "92", "MINT": "72", "AVGT": "80"}];
-        var datanav1;
-        var date=datanav.map(x => {return x.DATE});
-        var mint=datanav.map(x => {return x.MINT});
-        var maxt=datanav.map(x => {return x.MAXT});
-        var avgt=datanav.map(x => {return x.AVGT});
+        var datanav1=[{"DATE": "2020/7/2", "MAXT": "92.40365998", "MINT": "83.45532658", "AVGT": "87.92949328"}, {"DATE": "2020/7/3", "MAXT": "92.64798735", "MINT": "83.11244801", "AVGT": "87.38021768"}, {"DATE": "2020/7/4", "MAXT": "92.95936276", "MINT": "82.83958245", "AVGT": "87.39947261"}, {"DATE": "2020/7/5", "MAXT": "93.26402757", "MINT": "82.56296996", "AVGT": "87.41349876"}, {"DATE": "2020/7/6", "MAXT": "93.6600389", "MINT": "82.38060574", "AVGT": "87.52032232"}, {"DATE": "2020/7/7", "MAXT": "94.10404613", "MINT": "81.24910481", "AVGT": "87.67657547"}, {"DATE": "2020/7/8", "MAXT": "94.28125253", "MINT": "81.85362166", "AVGT": "87.5674371"}];
+        var datanav;
+        var date,mint,maxt,avgt;
+        // var date=datanav.map(x => {return x.DATE});
+        // var mint=datanav.map(x => {return x.MINT});
+        // var maxt=datanav.map(x => {return x.MAXT});
+        // var avgt=datanav.map(x => {return x.AVGT});
 
-        window.onload=function() {
-            var table = document.getElementsByTagName('table')[0];
-            for (var i = 0; i < datanav.length; i++) {
-                var tr = table.insertRow(table.rows.length);
-                var obj = datanav[i];
-                for (var p in obj) {
-                    var td = tr.insertCell(tr.cells.length);
-                    td.innerText = obj[p];
-                }
-            }
-        }
+        // function f() {
+        //     var table = document.getElementsByTagName('table')[0];
+        //     for (var i = 0; i < datanav.length; i++) {
+        //         var tr = table.insertRow(table.rows.length);
+        //         var obj = datanav[i];
+        //         for (var p in obj) {
+        //             var td = tr.insertCell(tr.cells.length);
+        //             td.innerText = obj[p];
+        //         }
+        //     }
+        // }
 
 
            function choose() {
@@ -151,8 +161,23 @@
                // 接收到服务器消息后的回调函数
                ws.onmessage = function (evt)
                {
-                   datanav = evt.data;
-                   window.location.reload();//刷新界面
+                   datanav = JSON.parse(evt.data);
+                   alert(datanav);
+                   date=datanav.map(x => {return x.DATE});
+                   mint=datanav.map(x => {return x.MINT});
+                   maxt=datanav.map(x => {return x.MAXT});
+                   avgt=datanav.map(x => {return x.AVGT});
+                   var table = document.getElementsByTagName('table')[0];
+                   for (var i = 0; i < datanav.length; i++) {
+                       var tr = table.insertRow(table.rows.length);
+                       var obj = datanav[i];
+                           for (var p in obj) {
+                               var td = tr.insertCell(tr.cells.length);
+                    td.innerText = obj[p];
+                }
+            }
+
+                   // window.location.reload();//刷新界面
                   // alert("收到消息："+received_msg);
                    ws.close();
 
@@ -272,16 +297,7 @@
     });
     </script>
 
-    <body>
-        <table border="4">
-            <tr>
-                <th>日期</th>
-                <th>最高气温</th>
-                <th>最低气温</th>
-                <th>平均气温</th>
-           </tr>
-        </table>
-    </body>
+
 
 
 <!--<body onload="WebSocketTest()">-->
