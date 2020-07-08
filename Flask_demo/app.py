@@ -9,7 +9,6 @@ console_list = []
 admin_socket = []
 
 
-
 def check_permit(user_socket):
     try:
         msg = user_socket.receive()
@@ -21,8 +20,8 @@ def check_permit(user_socket):
     try:
         user, passwd = msg.split(":")
     except ValueError or AttributeError:
-        response_str = "Server: \nsorry, the username or password is wrong, please submit again"
-        user_socket.send(response_str)
+        # response_str = "Server: \nsorry, the username or password is wrong, please submit again"
+        # user_socket.send(response_str)
         return False
 
     # 两个客户端：admin和console，admin可以与服务端交互收发信息，console监控前两者的交互数据
@@ -38,36 +37,36 @@ def check_permit(user_socket):
                 admin_socket[0].close()
                 admin_socket[0] = user_socket
 
-
         print(str(user) + " connected!")
-        response_str = "Server: " + user + " log in!\n"
-        user_socket.send(response_str)
+        # response_str = "Server: " + user + " log in!\n"
+        # user_socket.send(response_str)
         return True
     else:
-        response_str = "Server: \nsorry, the username or password is wrong, please submit again"
-        user_socket.send(response_str)
+        # response_str = "Server: \nsorry, the username or password is wrong, please submit again"
+        # user_socket.send(response_str)
         return False
 
-def publish(user, msg):
-    i = 0
-    for client in console_list:
-        i += 1
-        try:
-            client.send(user + ": \n" + msg)
-            print("@console read: " + str(i))
-        except WebSocketError as e:
-            print("@console " + str(i) + " disconnected.")
-            continue
 
+def publish(user, msg):
+    if msg is not None:
+        i = 0
+        for client in console_list:
+            i += 1
+            try:
+                s = user + ": " + msg
+                client.send(s)
+                print("@console read: " + str(i))
+            except WebSocketError as e:
+                print("@console " + str(i) + " disconnected.")
+                continue
 
 
 @app.route("/ws", methods=['GET', 'POST'])
 def ws():
     user_socket = request.environ.get('wsgi.websocket')  # type:WebSocket
-    user_socket.send("Please send username and passward: (format: \"username:passward\")")
+    # user_socket.send("Please send username and passward: (format: \"username:passward\")")
 
-    # while 1:
-    while check_permit(user_socket): # 用户名密码成功匹配
+    while check_permit(user_socket):  # 用户名密码成功匹配
         # 进入循环
         while 1:
             # 收信息
@@ -94,11 +93,8 @@ def ws():
                 if user_socket == admin_socket[0]:  # 发送给控制台监控
                     publish("Server", jsonStr)
             except WebSocketError:
-                print("websocket connect failed") #  异常处理
+                print("websocket connect failed")  # 异常处理
                 break
-
-
-
 
 
 if __name__ == '__main__':
