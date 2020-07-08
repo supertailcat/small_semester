@@ -1,8 +1,11 @@
+<!--{% load static %}-->
 <!DOCTYPE HTML>
 <html>
 <div id=”t-warp”>
     <head>
         <link href="favicon.ico" rel="shortcut icon">
+        <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+        <link href="{% static 'login/css/index.css' %}" rel="stylesheet"/>
         <meta charset="utf-8">
 <!--    <title>websocket通信客户端</title>-->
         <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
@@ -73,7 +76,6 @@
         var mint=datanav.map(x => {return x.MINT});
         var maxt=datanav.map(x => {return x.MAXT});
         var avgt=datanav.map(x => {return x.AVGT});
-       <!--parse方法将字符串转json对象要求格式必须单引号套双引号-->
 
         window.onload=function() {
             var table = document.getElementsByTagName('table')[0];
@@ -89,38 +91,86 @@
 
 
            function choose() {
-               if ("WebSocket" in window) {
-                   // 打开一个 web socket
-                   var ws = new WebSocket("ws://47.94.6.112:5678/ws");
-alert("Aa")
-                   ws.send("admin:123456");
-alert("Bb")
+               // if ("WebSocket" in window) {
+               //     // 打开一个 web socket
+               //     var ws = new WebSocket("ws://47.94.6.112:5678/ws");
+               //
+               //     // ws.onopen=function(){
+               //           var password='admin:123456';
+               //           alert(password);
+               //           ws.send(password);
+               //
+               //           alert("已登录");
+               //           ws.send(document.getElementById("s1").value);//发送城市代码
+               //            alert(document.getElementById("s1").value);
+               //
+               //
+               //
+               //
+               //          //已经连上，发送数据
+               //          // ws.send(document.getElementById("s1").value);//发送城市代码
+               //          // alert(document.getElementById("s1").value);
+               //          // window.location.reload();//刷新界面
+               //           //datanav = ws.;//更新datanav值，新的城市json字符串
+               //         // window.location.reload();//刷新界面
+               //         // alert("收到消息：" + datanav);
+               //         // document.getElementById('textfield').value = datanav;//？
+               //
+               //     // 接收到服务器消息后的回调函数
+               //     ws.onmessage = function (evt) {
+               //         console.debug("WebSocket message received:", evt);
+               //         alert("收到了！");
+               //         datanav = evt.data;//更新datanav值，新的城市json字符串
+               //
+               //         // window.location.reload();//刷新界面
+               //
+               //         // document.getElementById('textfield').value = datanav;//？
+               //
+               //     };
+               //      ws.close();//关闭连接，等待下次访问
+               //     // 连接关闭后的回调函数
+               //
+               // } else {
+               //     // 浏览器不支持 WebSocket
+               //     alert("您的浏览器不支持 WebSocket!");
+               // }
+               if ("WebSocket" in window)
+            {
+               // 打开一个 web socket
+               var ws = new WebSocket("ws://47.94.6.112:5678/ws");
+               // 连接建立后的回调函数
+               ws.onopen = function()
+               {
+               // Web Socket 已连接上，使用 send() 方法发送数据
+                  ws.send("admin:123456");
+                  alert("正在发送：admin:123456");
+                  ws.send(document.getElementById("s1").value);//发送城市代码
+                   alert(document.getElementById("s1").value);
+               };
 
-                        //已经连上，发送数据
-                        ws.send(document.getElementById("s1").value);//发送城市代码
-                        alert(document.getElementById("s1").value);
-                       //  datanav = ws.;//更新datanav值，新的城市json字符串
-                       // window.location.reload();//刷新界面
-                       // alert("收到消息：" + datanav);
-                       // document.getElementById('textfield').value = datanav;//？
+               // 接收到服务器消息后的回调函数
+               ws.onmessage = function (evt)
+               {
+                   datanav = evt.data;
+                   window.location.reload();//刷新界面
+                  // alert("收到消息："+received_msg);
+                   ws.close();
 
-                   // 接收到服务器消息后的回调函数
-                   ws.onmessage = function (evt) {
 
-                       datanav = evt.data;//更新datanav值，新的城市json字符串
-                       alert("收到消息：" + datanav);
-                       window.location.reload();//刷新界面
+               };
 
-                       document.getElementById('textfield').value = datanav;//？
-
-                   };
-                    ws.close();//关闭连接，等待下次访问
-                   // 连接关闭后的回调函数
-
-               } else {
-                   // 浏览器不支持 WebSocket
-                   alert("您的浏览器不支持 WebSocket!");
-               }
+               // 连接关闭后的回调函数
+               ws.onclose = function()
+               {
+                  // 关闭 websocket
+                  alert("连接已关闭...");
+               };
+            }
+            else
+            {
+               // 浏览器不支持 WebSocket
+               alert("您的浏览器不支持 WebSocket!");
+            }
         }
 // 初始化图表标签
 //     var myChart = echarts.init(document.getElementById('chart'));
@@ -157,21 +207,47 @@ alert("Bb")
             //图提示框
             tooltip:{
                 trigger:"axis",
+
                 axisPointer:{
-                    type:'shadow'
+                    type:'shadow',
+                },
+                axisLine:{
+                    color:['#ff000a'],
                 },
             },
             //图例
             legend:{
-                data:['最低气温','最高气温','平均气温']
+                data:['最低气温','最高气温','平均气温'],
+                color:['#ff000a'],
             },
             //x轴属性
             xAxis:{
                 data:date,
-                axisTick: {alignWithLabel: true}
+                axisTick: {alignWithLabel: true},
+                axisLabel:{
+                    interval:0,
+                    rotate:-30,
+                },
+                axisLine:{
+                    lineStyle:{
+                        color:['#ff000a'],
+                        width:1,
+                    }
+                }
             },
             //y轴属性
-            yAxis:{},
+            yAxis:{
+                axisLabel:{
+                    interval:0,
+                    rotate:-30,
+                },
+                axisLine:{
+                    lineStyle:{
+                        color:['#ff000a'],
+                        width:1,
+                    }
+                }
+            },
             //图属性
             series:[
                 {
