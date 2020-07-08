@@ -11,11 +11,16 @@ admin_socket = []
 
 
 def check_permit(user_socket):
-    msg = user_socket.receive()
-    print("@@-> " + msg)
+    try:
+        msg = user_socket.receive()
+        print("@@-> " + msg)
+    except WebSocketError:
+        print("error1")
+        return False
+
     try:
         user, passwd = msg.split(":")
-    except ValueError:
+    except ValueError or AttributeError:
         response_str = "Server: \nsorry, the username or password is wrong, please submit again"
         user_socket.send(response_str)
         return False
@@ -43,12 +48,16 @@ def check_permit(user_socket):
         user_socket.send(response_str)
         return False
 
-def publish(str, msg):
-    try:
-        for client in console_list:
-            client.send(str + ": \n" + msg)
-    except WebSocketError as e:
-        pass
+def publish(user, msg):
+    i = 0
+    for client in console_list:
+        i += 1
+        try:
+            client.send(user + ": \n" + msg)
+            print("@console read: " + str(i))
+        except WebSocketError as e:
+            print("@console " + str(i) + " disconnected.")
+            continue
 
 
 
@@ -57,38 +66,39 @@ def ws():
     user_socket = request.environ.get('wsgi.websocket')  # type:WebSocket
     user_socket.send("Please send username and passward: (format: \"username:passward\")")
 
-    while 1:
-        if check_permit(user_socket): # 用户名密码成功匹配
-            # 进入循环
-            while 1:
-                try:
-                    msg = user_socket.receive()
-                    publish("Admin", msg)
-                except TypeError as e:
-                    print("disconnect.")
-                    user_socket.close()
-                    break
+    # while 1:
+    while check_permit(user_socket): # 用户名密码成功匹配
+        # 进入循环
+        while 1:
+            # 收信息
+            try:
+                msg = user_socket.receive()
+            except WebSocketError:
+                print("error2")
+                break
 
-                try:
-                    jf = open("../Forecast/json/" + msg + ".json")
-                    jsonStr = json.dumps(json.load(jf))  # convert json data to str
-                    print(jsonStr)
-                    user_socket.send(jsonStr)
-                    if user_socket == admin_socket[0]:  # 发送给控制台监控
-                        publish("Server", jsonStr)
+            # 广播信息给控制台
+            publish("Admin", msg)
 
-                except FileNotFoundError as e:
-                    publish("Server", "cannot find the file.")
+            # 打开文件
+            try:
+                jf = open("../Forecast/json/" + msg + ".json")
+                jsonStr = json.dumps(json.load(jf))  # convert json data to str
+                print(jsonStr)
+            except FileNotFoundError as e:
+                publish("Server", "cannot find the city.")
 
-                # if msg == "SEND_JSON":
-                #     jf = open("Forecast/json/" + msg + ".json")
-                #     jsonStr = json.dumps(json.load(jf))  # convert json data to str
-                #     print(jsonStr)
-                #     user_socket.send(jsonStr)
-                #     if user_socket == admin_socket[0]:  # 发送给控制台监控
-                #         publish("Server", jsonStr)
-    # else:
-    #     pass
+            # 发信息
+            try:
+                user_socket.send(jsonStr)
+                if user_socket == admin_socket[0]:  # 发送给控制台监控
+                    publish("Server", jsonStr)
+            except WebSocketError:
+                print("websocket connect failed") #  异常处理
+                break
+
+
+
 
 
 if __name__ == '__main__':
