@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <html>
-
+<div id=”t-warp”>
     <head>
         <link href="favicon.ico" rel="shortcut icon">
         <meta charset="utf-8">
@@ -15,33 +15,60 @@
         </p>
         <h1 align="center">Weather Prediction</h1>
         <body>
+        <label>
+            <select id="s1">
+                <option value="BeiJing">BeiJing</option>
+                <option value="ChangChun">ChangChun</option>
+                <option value="ChangSha">ChangSha</option>
+                <option value="ChengDu">ChengDu</option>
+                <option value="ChongQing">ChongQing</option>
+                <option value="FuZhou">FuZhou</option>
+                <option value="GuangZhou">GuangZhou</option>
+                <option value="GuiYang">GuiYang</option>
+                <option value="HaErBin">HaErBin</option>
+                <option value="HaiKou">HaiKou</option>
+                <option value="HangZhou">HangZhou</option>
+                <option value="HeFei">HeFei</option>
+                <option value="HongKong">HongKong</option>
+                <option value="HuHeHaoTe">HuHeHaoTe</option>
+                <option value="JiNan">JiNan</option>
+                <option value="KunMing">KunMing</option>
+                <option value="LanZhou">LanZhou</option>
+                <option value="LaSa">LaSa</option>
+                <option value="Macau">Macau</option>
+                <option value="NanChang">NanChang</option>
+                <option value="NanJing">NanJing</option>
+                <option value="NanNing">NanNing</option>
+                <option value="ShangHai">ShangHai</option>
+                <option value="ShenYang">ShenYang</option>
+                <option value="ShiJiaZhuang">ShiJiaZhuang</option>
+                <option value="TaiYuan">TaiYuan</option>
+                <option value="TianJin">TianJin</option>
+                <option value="WuHan">WuHan</option>
+                <option value="WuLuMuQi">WuLuMuQi</option>
+                <option value="XiAn">XiAn</option>
+                <option value="XiNing">XiNing</option>
+                <option value="YinChuan">YinChuan</option>
+                <option value="ZhengZhou">ZhengZhou</option>
+            </select>
+        </label>
+        <button onclick="choose()" >确定</button>
+<!--        <script type="text/javascript">-->
+<!--        function choose() {-->
+<!--            WebSocketTest();-->
+<!--            alert(document.getElementById("s1").value);-->
+<!--            window.location.reload();  //刷新界面-->
+<!--        }-->
+<!--        </script>-->
+    </body>
+        <body>
             <div id="chart" style="width:700px;height:400px;"></div>
         </body>
     </body>
-    <style type="test/css">
-   /*table{*/
-   /*    border:1px solid black;*/
-   /*    border-collapse: collapse;*/
-   /*}*/
-   /*td,th{*/
-   /*    border:1px solid black;*/
-   /*}*/
-    table{
-        margin: 0;
-        padding: 0;
-        outline: 0;
-        vertical-align: baseline;
-        background: transparent;
-        border-collapse: collapse;
-        border-spacing: 0;
-        border: 0;
-        color: #ff0012;
-       }
-    </style>
+
     <script type="text/javascript">
         var datanav=[{"DATE": "2020/1/10", "MAXT": "89", "MINT": "69", "AVGT": "80"},{"DATE": "2020/1/11", "MAXT": "89", "MINT": "73", "AVGT": "80"}, {"DATE": "2020/1/12", "MAXT": "86", "MINT": "69", "AVGT": "80"}, {"DATE": "2020/1/13", "MAXT": "79", "MINT": "66", "AVGT": "80"}, {"DATE": "2020/1/14", "MAXT": "96", "MINT": "74", "AVGT": "80"}, {"DATE": "2020/1/15", "MAXT": "88", "MINT": "74", "AVGT": "80"}, {"DATE": "2020/1/16", "MAXT": "92", "MINT": "72", "AVGT": "80"}];
-
-        var received_msg1='lzh'
+        var datanav1;
         var date=datanav.map(x => {return x.DATE});
         var mint=datanav.map(x => {return x.MINT});
         var maxt=datanav.map(x => {return x.MAXT});
@@ -61,31 +88,40 @@
         }
 
 
-        //    function WebSocketTest() {
-        //        if ("WebSocket" in window) {
-        //            // 打开一个 web socket
-        //            var ws = new WebSocket("ws://47.94.6.112:5678");
-        //
-        //
-        //            // 接收到服务器消息后的回调函数
-        //            ws.onmessage = function (evt) {
-        //                received_msg = evt.data;
-        //
-        //                alert("收到消息：" + received_msg);
-        //                document.getElementById('textfield').value = received_msg
-        //
-        //            };
-        //
-        //            // 连接关闭后的回调函数
-        //            ws.onclose = function () {
-        //                // 关闭 websocket
-        //                alert("传输结束...");
-        //            };
-        //        } else {
-        //            // 浏览器不支持 WebSocket
-        //            alert("您的浏览器不支持 WebSocket!");
-        //        }
-        // }
+           function choose() {
+               if ("WebSocket" in window) {
+                   // 打开一个 web socket
+                   var ws = new WebSocket("ws://47.94.6.112:5678/ws");
+alert("Aa")
+                   ws.send("admin:123456");
+alert("Bb")
+
+                        //已经连上，发送数据
+                        ws.send(document.getElementById("s1").value);//发送城市代码
+                        alert(document.getElementById("s1").value);
+                       //  datanav = ws.;//更新datanav值，新的城市json字符串
+                       // window.location.reload();//刷新界面
+                       // alert("收到消息：" + datanav);
+                       // document.getElementById('textfield').value = datanav;//？
+
+                   // 接收到服务器消息后的回调函数
+                   ws.onmessage = function (evt) {
+
+                       datanav = evt.data;//更新datanav值，新的城市json字符串
+                       alert("收到消息：" + datanav);
+                       window.location.reload();//刷新界面
+
+                       document.getElementById('textfield').value = datanav;//？
+
+                   };
+                    ws.close();//关闭连接，等待下次访问
+                   // 连接关闭后的回调函数
+
+               } else {
+                   // 浏览器不支持 WebSocket
+                   alert("您的浏览器不支持 WebSocket!");
+               }
+        }
 // 初始化图表标签
 //     var myChart = echarts.init(document.getElementById('chart'));
 //     var options={
@@ -170,53 +206,9 @@
            </tr>
         </table>
     </body>
-    <body>
-        <label>
-            <select id="s1">
-                <option value="BeiJing">BeiJing</option>
-                <option value="ChangChun">ChangChun</option>
-                <option value="ChangSha">ChangSha</option>
-                <option value="ChengDu">ChengDu</option>
-                <option value="ChongQing">ChongQing</option>
-                <option value="FuZhou">FuZhou</option>
-                <option value="GuangZhou">GuangZhou</option>
-                <option value="GuiYang">GuiYang</option>
-                <option value="HaErBin">HaErBin</option>
-                <option value="HaiKou">HaiKou</option>
-                <option value="HangZhou">HangZhou</option>
-                <option value="HeFei">HeFei</option>
-                <option value="HongKong">HongKong</option>
-                <option value="HuHeHaoTe">HuHeHaoTe</option>
-                <option value="JiNan">JiNan</option>
-                <option value="KunMing">KunMing</option>
-                <option value="LanZhou">LanZhou</option>
-                <option value="LaSa">LaSa</option>
-                <option value="Macau">Macau</option>
-                <option value="NanChang">NanChang</option>
-                <option value="NanJing">NanJing</option>
-                <option value="NanNing">NanNing</option>
-                <option value="ShangHai">ShangHai</option>
-                <option value="ShenYang">ShenYang</option>
-                <option value="ShiJiaZhuang">ShiJiaZhuang</option>
-                <option value="TaiYuan">TaiYuan</option>
-                <option value="TianJin">TianJin</option>
-                <option value="WuHan">WuHan</option>
-                <option value="WuLuMuQi">WuLuMuQi</option>
-                <option value="XiAn">XiAn</option>
-                <option value="XiNing">XiNing</option>
-                <option value="YinChuan">YinChuan</option>
-                <option value="ZhengZhou">ZhengZhou</option>
-            </select>
-        </label>
-        <button onclick="choose()" >确定</button>
-        <script type="text/javascript">
-        function choose() {
-           alert(document.getElementById("s1").value);
-        }
-        </script>
-    </body>
 
 
-<!--   <body onload="WebSocketTest()">-->
+<!--<body onload="WebSocketTest()">-->
 <!--   </body>-->
+</div>
 </html>
