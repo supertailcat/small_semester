@@ -96,6 +96,12 @@ def ws():
                 print("websocket connect failed")  # 异常处理
                 break
 
+@app.route("/console")
+def console_run():
+    return render_template("console.html")
+@app.route("/client")
+def client_run():
+    return render_template("client.html")
 
 if __name__ == '__main__':
     # app.run(debug=False, host='0.0.0.0', port=80)
