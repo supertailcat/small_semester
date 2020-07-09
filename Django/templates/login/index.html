@@ -15,6 +15,7 @@
     <body>
     <h4>{{ request.session.user_name }}，欢迎您！</h4>
     <input type="hidden" value={{ request.session.user_name }} id="username"/>
+    <input type="hidden" value={{ request.session.user_city }} id="usercity"/>
     <p>
         <a href="/logout/">注销</a>
     </p>
@@ -118,6 +119,110 @@
         }, {"DATE": "2020/7/8", "MAXT": "94.28125253", "MINT": "81.85362166", "AVGT": "87.5674371"}];
         var datanav = '';
         var date, mint, maxt, avgt;
+        var city=document.getElementById('usercity').value;
+        ws.send(city);
+
+        ws.onmessage = function (evt) {
+
+                    datanav = JSON.parse(evt.data);
+                    date = datanav.map(x => {
+                        return x.DATE
+                    });
+                    mint = datanav.map(x => {
+                        return x.MINT
+                    });
+                    maxt = datanav.map(x => {
+                        return x.MAXT
+                    });
+                    avgt = datanav.map(x => {
+                        return x.AVGT
+                    });
+                    $(" tr:gt(0)").remove();//删除除第一个tr后的所有tr 目的是清除表格内容
+                    var table = document.getElementsByTagName('table')[0];
+                    for (var i = 0; i < datanav.length; i++) {
+                        var tr = table.insertRow(table.rows.length);
+                        var obj = datanav[i];
+                        for (var p in obj) {
+                            var td = tr.insertCell(tr.cells.length);
+                            td.innerText = obj[p];
+                        }
+                    }
+                    var myChart = echarts.init(document.getElementById("chart"));
+                    myChart.setOption({
+                        //图标题
+                        title: {text: '天气预测'},
+                        //图提示框
+                        tooltip: {
+                            trigger: "axis",
+
+                            axisPointer: {
+                                type: 'shadow',
+                            },
+                            axisLine: {
+                                color: ['#ff000a'],
+                            },
+                        },
+                        //图例
+                        legend: {
+                            data: ['最低气温', '最高气温', '平均气温'],
+                            color: ['#ff000a'],
+                        },
+                        //x轴属性
+                        xAxis: {
+                            data: date,
+                            axisTick: {alignWithLabel: true},
+                            axisLabel: {
+                                interval: 0,
+                                rotate: -30,
+                            },
+                            axisLine: {
+                                lineStyle: {
+                                    color: ['#ff000a'],
+                                    width: 1,
+                                }
+                            }
+                        },
+                        //y轴属性
+                        yAxis: {
+                            max:110,
+                            min:50,
+                            axisLabel: {
+                                interval: 0,
+                                rotate: -30,
+                            },
+                            axisLine: {
+                                lineStyle: {
+                                    color: ['#ff000a'],
+                                    width: 1,
+                                }
+                            }
+                        },
+                        //图属性
+                        series: [
+                            {
+                                name: '最低气温',
+                                type: 'line',//图类型：柱状图
+                                color: ['#1600ff'],//设置图像颜色
+                                data: mint,//图表的数值
+                                // itemStyle : { normal: {label : {show: true}}}
+                            }, {
+                                name: '最高气温',
+                                type: 'line',//图类型：柱状图
+                                color: ['#ff000a'],//设置图像颜色
+                                data: maxt,//图表的数值
+                            }, {
+                                name: '平均气温',
+                                type: 'line',//图类型：柱状图
+                                color: ['#ff00dc'],//设置图像颜色
+                                data: avgt,//图表的数值
+                            }
+                        ]
+                    });
+
+                    //ws.close();
+
+
+                };
 
         // 打开一个 web socket
         var ws = new WebSocket("ws://47.94.6.112:5678/ws");
