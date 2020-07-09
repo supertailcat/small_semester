@@ -5,11 +5,16 @@ from geventwebsocket.exceptions import WebSocketError
 from gevent.pywsgi import WSGIServer
 
 app = Flask(__name__)
-console_list = []
-admin_socket = []
+
+# 一个控制台监控一个账号的所有客户端
+console_dict = {}  # {"username":[console1, console2] , ... }
+client_dict = {}  # {"username": [admin1, admin2],  ...}
 
 
 def check_permit(user_socket):
+    key = ""  # 该线程键值
+    index = -1  # 该线程索引
+
     try:
         msg = user_socket.receive()
         print("@@-> " + msg)
@@ -27,37 +32,89 @@ def check_permit(user_socket):
     # 两个客户端：admin和console，admin可以与服务端交互收发信息，console监控前两者的交互数据
     if (user == "admin" and passwd == "123456") or (user == "console" and passwd == "123456"):
 
+        #  1. 接入的是console
         if user == "console":
             # 每接入一个客户端就会加进列表中
-            console_list.append(user_socket)
-        elif user == "admin":
-            if not admin_socket:
-                admin_socket.append(user_socket)
-            else:
-                admin_socket[0].close()
-                admin_socket[0] = user_socket
+            # console_list.append(user_socket)
+            try:
+                # 提示console输入需要监控的客户端编码
+                response_str = "Server: Please send the client name..."
+                user_socket.send(response_str)
 
-        print(str(user) + " connected!")
+                # 收到编码
+                key = user_socket.receive()
+                print("@@-> " + key)
+
+                # 字典中创建数组
+                if not console_dict.__contains__(key):
+                    console_dict[key] = []
+                console_dict[key].append(user_socket)
+
+                # 连接成功
+                response_str = "Server: console@" + key + " log in!"
+                user_socket.send(response_str)
+
+            except WebSocketError:
+                print("error in creating console dict.")
+
+        # 2. 接入的是client
+        elif user == "admin":
+            #  接受识别码作为字典编码
+            try:
+                key = user_socket.receive()
+                print("@@-> " + key)
+
+                # 客户端线程
+                if not client_dict.__contains__(key):
+                    client_dict[key] = []
+
+                client_dict[key].append(user_socket)
+                # 给客户端返回一个编号index
+                # TO DO
+                index = len(client_dict[key]) - 1
+
+                print(key + "@threads: " + str(len(client_dict[key])))  # print test
+
+            except WebSocketError:
+                print("error in creating client dict.")
+
+        print("connected!")
         # response_str = "Server: " + user + " log in!\n"
         # user_socket.send(response_str)
-        return True
+        return key, index
     else:
         # response_str = "Server: \nsorry, the username or password is wrong, please submit again"
         # user_socket.send(response_str)
         return False
 
 
-def publish(user, msg):
+'''
+publish()
+    sender_type:
+        0: server
+        1: client
+    username: account(group)
+    index: the index of the group "username"
+    msg: message which to be published
+
+'''
+
+
+def publish(sender_type, username, index, msg):
     if msg is not None:
         i = 0
-        for client in console_list:
+        for client in console_dict[username]:
             i += 1
             try:
-                s = user + ": " + msg
+                if sender_type:
+                    s = username + "@" + str(index + 1) + "->Server: " + msg
+                else:
+                    s = "Server->" + username + "@" + str(index + 1) + ": " + msg
+
                 client.send(s)
-                print("@console read: " + str(i))
+                print(username + "@console read: " + str(i))
             except WebSocketError as e:
-                print("@console " + str(i) + " disconnected.")
+                print(username + "@console " + str(i) + " disconnected.")
                 continue
 
 
@@ -65,8 +122,9 @@ def publish(user, msg):
 def ws():
     user_socket = request.environ.get('wsgi.websocket')  # type:WebSocket
     # user_socket.send("Please send username and passward: (format: \"username:passward\")")
-
-    while check_permit(user_socket):  # 用户名密码成功匹配
+    # 保存该线程的用户名、对应编号
+    username, index = check_permit(user_socket)
+    while username:  # 用户名密码成功匹配
         # 进入循环
         while 1:
             # 收信息
@@ -76,8 +134,8 @@ def ws():
                 print("error2")
                 break
 
-            # 广播信息给控制台
-            publish("Admin", msg)
+            # # 广播信息给控制台
+            publish(1, username, index, msg)
 
             # 打开文件
             try:
@@ -86,23 +144,26 @@ def ws():
 
                 print(jsonStr)
             except FileNotFoundError as e:
-                publish("Server", "cannot find the city.")
+                publish(0, username, index, "cannot find the city.")
 
             # 发信息
             try:
                 user_socket.send(jsonStr)
-                if user_socket == admin_socket[0]:  # 发送给控制台监控
-                    publish("Server", jsonStr)
+                publish(0, username, index, jsonStr)
             except WebSocketError:
                 print("websocket connect failed")  # 异常处理
                 break
 
+
 @app.route("/console")
 def console_run():
     return render_template("console.html")
+
+
 @app.route("/client")
 def client_run():
     return render_template("client.html")
+
 
 if __name__ == '__main__':
     # app.run(debug=False, host='0.0.0.0', port=80)

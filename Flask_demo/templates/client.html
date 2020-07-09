@@ -13,6 +13,7 @@
     //开局连接
     ws.onopen = function(){
         ws.send("admin:123456");
+        // ws.send("ypy")
     }
     ws.onmessage = function (rec) {
         document.getElementById("content").innerHTML+=rec.data+"<br/>";

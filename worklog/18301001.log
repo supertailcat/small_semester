@@ -215,6 +215,21 @@
 9:00-12:00
 主要内容：基于flask框架，采用websocket技术，实现多客户端与控制台的分布式管理
 	1. 实现为每个客户端动态分配路由，实现控制台监控
+	2. 构思websocket线程的分布式管理
+14:00-18：00
+	1. 构建两个字典，分别装console、client的线程，
+			console_dict = {"username":[console1, console2] , ... }
+			client_dict = {"username": [username_admin1, username_admin2],  ...}
+	2. muti-client管理：
+		每个username为一个组，每个username_admin能和server独立交互传输
+		* 需要与客户端约定协议，通过username、index两个参数识别所对应的线程号
+	3. console管理
+		实现对同一个账号的所有username_admin进行统一监控
+	
+以上功能已实现：支持并发，控制台可以监控
+			
+
+	
 	
 
 		
