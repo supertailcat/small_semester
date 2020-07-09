@@ -10,9 +10,11 @@
         <!--    <title>websocket通信客户端</title>-->
         <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
         <script src="https://cdn.bootcss.com/jquery/3.4.0/jquery.min.js"></script>
+        <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
     </head>
     <body>
-    <h2>{{ request.session.user_name }}，欢迎您！</h2>
+    <h4>{{ request.session.user_name }}，欢迎您！</h4>
+    <input type="hidden" value={{ request.session.user_name }} id="username"/>
     <p>
         <a href="/logout/">注销</a>
     </p>
@@ -58,6 +60,16 @@
     <button onclick="choose()">确定</button>
     </body>
     <body>
+    <div class="box">
+	<!-- 标签使用量统计 -->
+	<div class="box-header">
+		<h3 class="box-title">全国数据统计</h3>
+	</div>
+	<div id="china_div" class="col-md-12" style="height:600px;"></div>
+	<!-- 渲染容器一定要设置宽高 -->
+    </div>
+    </body>
+    <body>
     <div id="chart" style="width:700px;height:400px;"></div>
     </body>
     </body>
@@ -72,6 +84,7 @@
     </table>
     </body>
     <script type="text/javascript">
+        initChina();
         var datanav1 = [{
             "DATE": "2020/7/2",
             "MAXT": "92.40365998",
@@ -112,17 +125,115 @@
         ws.onopen = function () {
             // Web Socket 已连接上，使用 send() 方法发送数据
             ws.send("admin:123456");
+            ws.send(document.getElementById('username').value);
         };
+        //先直接显示当亲登录用户注册时填写的城市信息
+        initChina();
+        function initChina(){
+	var splitList = [{start: 400, end:500},
+	                 {start: 300, end: 400},
+	                 {start: 200, end: 300},
+	                 {start: 100, end: 200},
+	                 {start: 0, end: 100}];
 
-        function choose() {
-            if ("WebSocket" in window) {
+		var mydata = [
+             {name: '北京',value: '100' },{name: '天津',value: randomData() },
+             {name: '上海',value: randomData() },{name: '重庆',value: randomData() },
+             {name: '河北',value: randomData() },{name: '河南',value: randomData() },
+             {name: '云南',value: randomData() },{name: '辽宁',value: randomData() },
+             {name: '黑龙江',value: randomData() },{name: '湖南',value: randomData() },
+             {name: '安徽',value: randomData() },{name: '山东',value: randomData() },
+             {name: '新疆',value: randomData() },{name: '江苏',value: randomData() },
+             {name: '浙江',value: randomData() },{name: '江西',value: randomData() },
+             {name: '湖北',value: randomData() },{name: '广西',value: randomData() },
+             {name: '甘肃',value: randomData() },{name: '山西',value: randomData() },
+             {name: '内蒙古',value: randomData() },{name: '陕西',value: randomData() },
+             {name: '吉林',value: randomData() },{name: '福建',value: randomData() },
+             {name: '贵州',value: randomData() },{name: '广东',value: randomData() },
+             {name: '青海',value: randomData() },{name: '西藏',value: randomData() },
+             {name: '四川',value: randomData() },{name: '宁夏',value: randomData() },
+             {name: '海南',value: randomData() },{name: '台湾',value: randomData() },
+             {name: '香港',value: randomData() },{name: '澳门',value: randomData() }
+         ];
+		var optionMap = {
+	            backgroundColor: '#ffffff',
+	            tooltip : {
+	                trigger: 'item'
+	            },
+	            //左侧小导航图标
+	            visualMap: {
+	                left: 'left',
+	                top: 'top',
+	                splitList:splitList,
+	                color: ['red', '#9feaa5', '#85daef','#74e2ca', '#e6ac53'],
+	                show:true
+	            },
+	            //配置属性
+	            series: [{
+	                name: '量级',
+	                type: 'map',
+	                mapType: 'china', // 地图类型，支持world，china及全国34个省市自治区
+	                roam: false,  // 是否开启滚轮缩放和拖拽漫游,默认为false（关闭），其他有效输入为true（开启），'scale'（仅开启滚轮缩放），'move'（仅开启拖拽漫游）
+	                label: {
+	                    normal: {
+	                        show: true  //省份名称
+	                    },
+	                    emphasis: {
+	                        show: false
+	                    }
+	                },
+	                data:mydata,  //数据
+	            }]
+	        };
 
+		//初始化echarts实例
+	    var myChart = echarts.init(document.getElementById('china_div'));
+// 	    //使用制定的配置项和数据显示图表
+	    myChart.setOption(optionMap);
+
+	    myChart.on('click', function (params) {
+	        if ("WebSocket" in window) {
                 datanav = null;
+                 var c;
+                if(params.name=="北京"){c='BeiJing';}
+                else if(params.name=="黑龙江"){c='HaErBin';}
+                else if(params.name=="吉林"){c='ChangChun';}
+                else if(params.name=="辽宁"){c='ShenYang';}
+                else if(params.name=="内蒙古"){c='HuHeHaoTe';}
+                else if(params.name=="山东"){c='JiNan';}
+                else if(params.name=="天津"){c='TianJing';}
+                else if(params.name=="河北"){c='ShiJiaZhuang';}
+                else if(params.name=="山西"){c='TaiYuan';}
+                else if(params.name=="河南"){c='ZhengZhou';}
+                else if(params.name=="安徽"){c='HeFei';}
+                else if(params.name=="江苏"){c='NanJing';}
+                else if(params.name=="上海"){c='ShangHai';}
+                else if(params.name=="浙江"){c='HangZhou';}
+                else if(params.name=="福建"){c='FuZhou';}
+                else if(params.name=="广东"){c='GuangZhou';}
+                else if(params.name=="香港"){c='HongKong';}
+                else if(params.name=="澳门"){c='Macau';}
+                else if(params.name=="海南"){c='HaiKou';}
+                else if(params.name=="广西"){c='NanNing';}
+                else if(params.name=="云南"){c='KunMing';}
+                else if(params.name=="贵州"){c='GuiYang';}
+                else if(params.name=="四川"){c='ChengDu';}
+                else if(params.name=="陕西"){c='XiAn';}
+                else if(params.name=="重庆"){c='ChongQing';}
+                else if(params.name=="湖北"){c='WuHan';}
+                else if(params.name=="湖南"){c='ChangSha';}
+                else if(params.name=="江西"){c='NanChang';}
+                else if(params.name=="甘肃"){c='LanZhou';}
+                else if(params.name=="宁夏"){c='YinChuan';}
+                else if(params.name=="青海"){c='XiNing';}
+                else if(params.name=="西藏"){c='LaSa';}
+                else if(params.name=="新疆"){c='WuLuMuQi';}
 
-                ws.send(document.getElementById("s1").value);//发送城市代码
+                ws.send(c);//发送城市代码
 
                 // 接收到服务器消息后的回调函数
                 ws.onmessage = function (evt) {
+
                     datanav = JSON.parse(evt.data);
                     date = datanav.map(x => {
                         return x.DATE
@@ -183,6 +294,8 @@
                         },
                         //y轴属性
                         yAxis: {
+                            max:110,
+                            min:50,
                             axisLabel: {
                                 interval: 0,
                                 rotate: -30,
@@ -226,10 +339,22 @@
                     // 关闭 websocket
                     alert("连接已关闭...");
                 };
-            } else {// 浏览器不支持 WebSocket
+                //alert(params.name);
+            }else{
+	            // 浏览器不支持 WebSocket
                 alert("您的浏览器不支持 WebSocket!");
             }
-        }
+	    });
+
+}
+
+
+function randomData() {
+    return Math.round(Math.random()*500);
+
+}
+
     </script>
+
 </div>
-</html>
+</html>`
