@@ -38,8 +38,8 @@ def check_permit(user_socket):
             # console_list.append(user_socket)
             try:
                 # 提示console输入需要监控的客户端编码
-                response_str = "Server: Please send the client name..."
-                user_socket.send(response_str)
+                # response_str = "Server: Please send the client name..."
+                # user_socket.send(response_str)
 
                 # 收到编码
                 key = user_socket.receive()
@@ -53,6 +53,7 @@ def check_permit(user_socket):
                 # 连接成功
                 response_str = "Server: console@" + key + " log in!"
                 user_socket.send(response_str)
+                # user_socket.send("*************************************************************************************")
 
             except WebSocketError:
                 print("error in creating console dict.")
@@ -103,19 +104,22 @@ publish()
 def publish(sender_type, username, index, msg):
     if msg is not None:
         i = 0
-        for client in console_dict[username]:
-            i += 1
-            try:
-                if sender_type:
-                    s = username + "@" + str(index + 1) + "->Server: " + msg
-                else:
-                    s = "Server->" + username + "@" + str(index + 1) + ": " + msg
+        try:
+            for client in console_dict[username]:
+                i += 1
+                try:
+                    if sender_type:
+                        s = username + "@" + str(index + 1) + "->Server: " + msg
+                    else:
+                        s = "Server->" + username + "@" + str(index + 1) + ": " + msg
 
-                client.send(s)
-                print(username + "@console read: " + str(i))
-            except WebSocketError as e:
-                print(username + "@console " + str(i) + " disconnected.")
-                continue
+                    client.send(s)
+                    print(username + "@console read: " + str(i))
+                except WebSocketError as e:
+                    print(username + "@console " + str(i) + " disconnected.")
+                    continue
+        except KeyError:
+            print("No key: " + str(username))
 
 
 @app.route("/ws", methods=['GET', 'POST'])

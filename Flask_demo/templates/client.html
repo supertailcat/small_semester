@@ -7,6 +7,9 @@
 
 <body>
 <h1>Client</h1>
+<div id="tips"> Please send the client name... <br /></div>
+<input id="name" type="text" name="username">
+<button onclick="choose()">log in</button>
 
 <script type="application/javascript">
     ws = new WebSocket("ws://47.94.6.112:5678/ws")
@@ -21,6 +24,11 @@
     ws.onclose = function () {
         window.location.reload(); // 重新加载
 
+    }
+
+    function choose(){
+        var str = document.getElementById('name').value;
+        ws.send(str);
     }
 
 </script>
