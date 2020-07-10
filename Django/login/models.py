@@ -4,7 +4,6 @@ from django.db import models
 
 
 class User(models.Model):
-
     citys = (
         ('BeiJing', '北京'),
         ('ChangChun', '长春'),
