@@ -19,46 +19,46 @@
         <a href="/logout/">注销</a>
     </p>
     <h1 align="center">Weather Prediction</h1>
-    <body>
-    <label>
-        <select id="s1">
-            <option value="BeiJing">BeiJing</option>
-            <option value="ChangChun">ChangChun</option>
-            <option value="ChangSha">ChangSha</option>
-            <option value="ChengDu">ChengDu</option>
-            <option value="ChongQing">ChongQing</option>
-            <option value="FuZhou">FuZhou</option>
-            <option value="GuangZhou">GuangZhou</option>
-            <option value="GuiYang">GuiYang</option>
-            <option value="HaErBin">HaErBin</option>
-            <option value="HaiKou">HaiKou</option>
-            <option value="HangZhou">HangZhou</option>
-            <option value="HeFei">HeFei</option>
-            <option value="HongKong">HongKong</option>
-            <option value="HuHeHaoTe">HuHeHaoTe</option>
-            <option value="JiNan">JiNan</option>
-            <option value="KunMing">KunMing</option>
-            <option value="LanZhou">LanZhou</option>
-            <option value="LaSa">LaSa</option>
-            <option value="Macau">Macau</option>
-            <option value="NanChang">NanChang</option>
-            <option value="NanJing">NanJing</option>
-            <option value="NanNing">NanNing</option>
-            <option value="ShangHai">ShangHai</option>
-            <option value="ShenYang">ShenYang</option>
-            <option value="ShiJiaZhuang">ShiJiaZhuang</option>
-            <option value="TaiYuan">TaiYuan</option>
-            <option value="TianJin">TianJin</option>
-            <option value="WuHan">WuHan</option>
-            <option value="WuLuMuQi">WuLuMuQi</option>
-            <option value="XiAn">XiAn</option>
-            <option value="XiNing">XiNing</option>
-            <option value="YinChuan">YinChuan</option>
-            <option value="ZhengZhou">ZhengZhou</option>
-        </select>
-    </label>
-    <button onclick="choose()">确定</button>
-    </body>
+<!--    <body>-->
+<!--    <label>-->
+<!--        <select id="s1">-->
+<!--            <option value="BeiJing">BeiJing</option>-->
+<!--            <option value="ChangChun">ChangChun</option>-->
+<!--            <option value="ChangSha">ChangSha</option>-->
+<!--            <option value="ChengDu">ChengDu</option>-->
+<!--            <option value="ChongQing">ChongQing</option>-->
+<!--            <option value="FuZhou">FuZhou</option>-->
+<!--            <option value="GuangZhou">GuangZhou</option>-->
+<!--            <option value="GuiYang">GuiYang</option>-->
+<!--            <option value="HaErBin">HaErBin</option>-->
+<!--            <option value="HaiKou">HaiKou</option>-->
+<!--            <option value="HangZhou">HangZhou</option>-->
+<!--            <option value="HeFei">HeFei</option>-->
+<!--            <option value="HongKong">HongKong</option>-->
+<!--            <option value="HuHeHaoTe">HuHeHaoTe</option>-->
+<!--            <option value="JiNan">JiNan</option>-->
+<!--            <option value="KunMing">KunMing</option>-->
+<!--            <option value="LanZhou">LanZhou</option>-->
+<!--            <option value="LaSa">LaSa</option>-->
+<!--            <option value="Macau">Macau</option>-->
+<!--            <option value="NanChang">NanChang</option>-->
+<!--            <option value="NanJing">NanJing</option>-->
+<!--            <option value="NanNing">NanNing</option>-->
+<!--            <option value="ShangHai">ShangHai</option>-->
+<!--            <option value="ShenYang">ShenYang</option>-->
+<!--            <option value="ShiJiaZhuang">ShiJiaZhuang</option>-->
+<!--            <option value="TaiYuan">TaiYuan</option>-->
+<!--            <option value="TianJin">TianJin</option>-->
+<!--            <option value="WuHan">WuHan</option>-->
+<!--            <option value="WuLuMuQi">WuLuMuQi</option>-->
+<!--            <option value="XiAn">XiAn</option>-->
+<!--            <option value="XiNing">XiNing</option>-->
+<!--            <option value="YinChuan">YinChuan</option>-->
+<!--            <option value="ZhengZhou">ZhengZhou</option>-->
+<!--        </select>-->
+<!--    </label>-->
+<!--    <button onclick="choose()">确定</button>-->
+<!--    </body>-->
     <body>
     <div class="box">
 	<!-- 标签使用量统计 -->
@@ -159,7 +159,7 @@
              {name: '香港',value: randomData() },{name: '澳门',value: randomData() }
          ];
 		var optionMap = {
-	            backgroundColor: '#ffffff',
+	            //backgroundColor: '#ffffff',
 	            tooltip : {
 	                trigger: 'item'
 	            },
@@ -167,7 +167,7 @@
 	            visualMap: {
 	                left: 'left',
 	                top: 'top',
-	                splitList:splitList,
+	                //splitList:splitList,
 	                color: ['red', '#9feaa5', '#85daef','#74e2ca', '#e6ac53'],
 	                show:true
 	            },
@@ -176,7 +176,7 @@
 	                name: '量级',
 	                type: 'map',
 	                mapType: 'china', // 地图类型，支持world，china及全国34个省市自治区
-	                roam: false,  // 是否开启滚轮缩放和拖拽漫游,默认为false（关闭），其他有效输入为true（开启），'scale'（仅开启滚轮缩放），'move'（仅开启拖拽漫游）
+	                roam: true,  // 是否开启滚轮缩放和拖拽漫游,默认为false（关闭），其他有效输入为true（开启），'scale'（仅开启滚轮缩放），'move'（仅开启拖拽漫游）
 	                label: {
 	                    normal: {
 	                        show: true  //省份名称
@@ -297,7 +297,7 @@
                         },
                         //y轴属性
                         yAxis: {
-                            max:110,
+                            max:100,
                             min:50,
                             axisLabel: {
                                 interval: 0,
