@@ -145,18 +145,18 @@ def ws():
             try:
                 jf = open("../Forecast/json/" + msg + ".json")
                 jsonStr = json.dumps(json.load(jf), sort_keys=False)  # convert json data to str
-
                 print(jsonStr)
+                # 发信息
+                try:
+                    user_socket.send(jsonStr)
+                    publish(0, username, index, jsonStr)
+                except WebSocketError:
+                    print("websocket connect failed")  # 异常处理
+                    break
+
             except FileNotFoundError as e:
                 publish(0, username, index, "cannot find the city.")
 
-            # 发信息
-            try:
-                user_socket.send(jsonStr)
-                publish(0, username, index, jsonStr)
-            except WebSocketError:
-                print("websocket connect failed")  # 异常处理
-                break
 
 
 @app.route("/console")
