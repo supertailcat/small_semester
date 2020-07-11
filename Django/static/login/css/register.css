@@ -10,8 +10,19 @@ body {
   padding: 15px;
   margin: 0 auto;
 }
-.form-group {
+.form-register input[type="text"] {
   background-color: transparent;
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-register input[type="password"] {
+  background-color: transparent;
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.form-group {
   margin-bottom: 5px;
 }
 form a{
