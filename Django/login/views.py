@@ -6,13 +6,6 @@ from django.utils import timezone
 from django.conf import settings
 
 
-def make_confirm_string(user):
-    now = timezone.now().strftime("%Y-%m-%d %H:%M:%S")
-    code = hash_code(user.name, now)
-    models.ConfirmString.objects.create(code=code, user=user,)
-    return code
-
-
 def hash_code(s, salt='mysite'):    # 加点盐，对密码进行加密处理
     h = hashlib.sha256()
     s += salt
@@ -43,11 +36,6 @@ def login(request):
             except:
                 message = '用户不存在！'
                 return render(request, 'login/login.html', locals())
-
-            # if not user.has_confirmed:
-            #     message = '该用户还未经过邮件确认！'
-            #     return render(request, 'login/login.html', locals())
-
             if user.password == hash_code(password):
                 request.session['is_login'] = True      # 可以添加其他数据，不限于用户相关
                 request.session['user_id'] = user.id
@@ -97,11 +85,6 @@ def register(request):
                 new_user.email = email
                 new_user.city = city
                 new_user.save()
-
-                code = make_confirm_string(new_user)
-                # send_email(email, code)
-
-                # message = '请前往邮箱进行确认！'
                 return render(request, 'login/confirm.html', locals())
         else:
             return render(request, 'login/register.html', locals())
@@ -118,23 +101,4 @@ def logout(request):
 
 
 def user_confirm(request):
-    code = request.GET.get('code', None)
-    message = ''
-    try:
-        confirm = models.ConfirmString.objects.get(code=code)
-    except:
-        message = '无效的确认请求!'
-        return render(request, 'login/confirm.html', locals())
-
-    c_time = confirm.c_time
-    now = timezone.now()
-    if now > c_time + datetime.timedelta(settings.CONFIRM_DAYS):
-        confirm.user.delete()
-        message = '您的邮件已经过期！请重新注册!'
-        return render(request, 'login/confirm.html', locals())
-    else:
-        confirm.user.has_confirmed = True
-        confirm.user.save()
-        confirm.delete()
-        message = '感谢确认，请使用账户登录！'
-        return render(request, 'login/confirm.html', locals())
+    return render(request, 'login/confirm.html', locals())
