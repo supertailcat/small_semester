@@ -22,6 +22,18 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+.form-register input[type="email"] {
+  background-color: transparent;
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.form-register input[type="checkbox"] {
+  background-color: transparent;
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
 .form-group {
   margin-bottom: 5px;
 }
