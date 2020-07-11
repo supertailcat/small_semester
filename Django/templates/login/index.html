@@ -131,23 +131,23 @@
                 {start: 0, end: 100}];
 
             var mydata = [
-                {name: '北京', value: '100'}, {name: '天津', value: randomData()},
-                {name: '上海', value: randomData()}, {name: '重庆', value: randomData()},
-                {name: '河北', value: randomData()}, {name: '河南', value: randomData()},
-                {name: '云南', value: randomData()}, {name: '辽宁', value: randomData()},
-                {name: '黑龙江', value: randomData()}, {name: '湖南', value: randomData()},
-                {name: '安徽', value: randomData()}, {name: '山东', value: randomData()},
-                {name: '新疆', value: randomData()}, {name: '江苏', value: randomData()},
-                {name: '浙江', value: randomData()}, {name: '江西', value: randomData()},
-                {name: '湖北', value: randomData()}, {name: '广西', value: randomData()},
-                {name: '甘肃', value: randomData()}, {name: '山西', value: randomData()},
-                {name: '内蒙古', value: randomData()}, {name: '陕西', value: randomData()},
-                {name: '吉林', value: randomData()}, {name: '福建', value: randomData()},
-                {name: '贵州', value: randomData()}, {name: '广东', value: randomData()},
-                {name: '青海', value: randomData()}, {name: '西藏', value: randomData()},
-                {name: '四川', value: randomData()}, {name: '宁夏', value: randomData()},
-                {name: '海南', value: randomData()}, {name: '台湾', value: randomData()},
-                {name: '香港', value: randomData()}, {name: '澳门', value: randomData()}
+                {name: '北京', value: '10'}, {name: '天津', value: '20'},
+                {name: '上海', value: '30'}, {name: '重庆', value: '40'},
+                {name: '河北', value: '50'}, {name: '河南', value: '60'},
+                {name: '云南', value: '70'}, {name: '辽宁', value: '80'},
+                {name: '黑龙江', value: '90'}, {name: '湖南', value: '100'},
+                {name: '安徽', value: '110'}, {name: '山东', value: '120'},
+                {name: '新疆', value: '130'}, {name: '江苏', value: '140'},
+                {name: '浙江', value: '150'}, {name: '江西', value: '160'},
+                {name: '湖北', value: '170'}, {name: '广西', value: '180'},
+                {name: '甘肃', value: '190'}, {name: '山西', value: '200'},
+                {name: '内蒙古', value: '25'}, {name: '陕西', value: '35'},
+                {name: '吉林', value: '45'}, {name: '福建', value: '55'},
+                {name: '贵州', value: '65'}, {name: '广东', value: '75'},
+                {name: '青海', value: '85'}, {name: '西藏', value: '95'},
+                {name: '四川', value: '105'}, {name: '宁夏', value: '115'},
+                {name: '海南', value: '125'}, {name: '台湾', value: '135'},
+                {name: '香港', value: '200'}, {name: '澳门', value: '200'}
             ];
             var optionMap = {
                 //backgroundColor: '#ffffff',
@@ -160,11 +160,11 @@
                     top: 'top',
                     //splitList:splitList,
                     color: ['red', '#9feaa5', '#85daef', '#74e2ca', '#e6ac53'],
-                    show: true
+                    show: false
                 },
                 //配置属性
                 series: [{
-                    name: '量级',
+                    name: '城市：',
                     type: 'map',
                     mapType: 'china', // 地图类型，支持world，china及全国34个省市自治区
                     roam: true,  // 是否开启滚轮缩放和拖拽漫游,默认为false（关闭），其他有效输入为true（开启），'scale'（仅开启滚轮缩放），'move'（仅开启拖拽漫游）
