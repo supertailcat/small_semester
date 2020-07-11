@@ -1,7 +1,7 @@
 body {
   height: 100%;
   background-repeat:no-repeat;
-  background-size:100% 150%;
+  background-size:100% 170%;
   background-image: url('../image/background2.jpg');
 }
 .form-login {
@@ -26,11 +26,13 @@ body {
   z-index: 2;
 }
 .form-login input[type="text"] {
+  background-color: transparent;
   margin-bottom: -1px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
 .form-login input[type="password"] {
+  background-color: transparent;
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
