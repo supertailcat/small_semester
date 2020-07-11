@@ -115,12 +115,12 @@
 
         // 打开一个 web socket
         var ws = new WebSocket("ws://47.94.6.112:5678/ws");
-        ws.send(document.getElementById('usercity').value);
         // 连接建立后的回调函数
         ws.onopen = function () {
             // Web Socket 已连接上，使用 send() 方法发送数据
             ws.send("admin:123456");
             ws.send(document.getElementById('username').value);
+            ws.send(document.getElementById('usercity').value);
         };
         //先直接显示当亲登录用户注册时填写的城市信息
         initChina();
